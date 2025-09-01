@@ -10,7 +10,7 @@ export type SlideType =
 export interface SlideData {
 
    id?: string | number;  
-   
+
   type: SlideType;
 
   // title
@@ -33,7 +33,7 @@ export interface SlideData {
   image?: string;
   heading?: string;
   text?: string;
-
+  imagePosition?: "left" | "right" | "top" | "bottom"; // 👈 add this
   // quote
   quote?: string;
   author?: string;
