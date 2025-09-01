@@ -23,7 +23,11 @@ interface User {
   id: string
   name?: string
   email: string
-  image?: string
+  // image?: string
+    emailVerified: boolean
+  createdAt: Date
+  updatedAt: Date
+  image?: string | null
 }
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
