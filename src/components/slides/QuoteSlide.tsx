@@ -3,7 +3,7 @@
 
 import React from 'react'
 import { Card, CardContent } from '@/components/ui/card'
-import type { SlideData } from '@/types/slides'
+import type { SlideData } from '@/types/slide'
 
 interface QuoteSlideProps {
   slide: SlideData

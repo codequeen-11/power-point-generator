@@ -74,6 +74,86 @@
 //   )
 // }
 
+
+
+
+// components/slides/ImageContentSlide.tsx
+// import Image from "next/image"
+// import { Card, CardContent } from "@/components/ui/card"
+
+// interface ImageContentSlideProps {
+//   title: string
+//   content: string
+//   imageUrl: string
+//   imagePosition?: "left" | "right" | "top" | "bottom"
+//   grayscale?: boolean
+//   blurLevel?: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10
+//   theme?: "light" | "dark" | "gradient"
+// }
+
+// export function ImageContentSlide({
+//   title,
+//   content,
+//   imageUrl,
+//   imagePosition = "right",
+//   grayscale = false,
+//   blurLevel = 0,
+//   theme = "light"
+// }: ImageContentSlideProps) {
+//   // Apply grayscale/blur only if it's a picsum.photos URL
+//   const enhancedImageUrl = imageUrl.includes("picsum.photos")
+//     ? `${imageUrl}${grayscale ? "?grayscale" : ""}${blurLevel ? `&blur=${blurLevel}` : ""}`
+//     : imageUrl
+
+//   // Theme classes for text/content side
+//   const themeClasses = {
+//     light: "bg-white text-slate-800",
+//     dark: "bg-slate-900 text-white",
+//     gradient: "bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-slate-900 dark:to-slate-800"
+//   }
+
+//   const textBgClass = themeClasses[theme].split(" ")[0] // Extract bg-* class
+//   const textColorClass = themeClasses[theme].split(" ")[1] // Extract text-* class
+
+//   // Layout logic for image + text
+//   let layoutClasses = "grid h-full"
+//   if (imagePosition === "left") layoutClasses += " md:grid-cols-2"
+//   if (imagePosition === "right") layoutClasses += " md:grid-cols-2 md:flex-row-reverse"
+//   if (imagePosition === "top") layoutClasses += " grid-rows-2"
+//   if (imagePosition === "bottom") layoutClasses += " grid-rows-2 flex-col-reverse"
+
+//   return (
+//     <Card className="w-full h-[600px] rounded-2xl shadow-lg overflow-hidden border-0 relative flex flex-col">
+//       {/* Content Grid */}
+//       <div className={layoutClasses}>
+//         {/* Image Side */}
+//         <div className="relative bg-slate-100 dark:bg-slate-800 flex items-center justify-center p-4">
+//           <Image
+//             src={enhancedImageUrl}
+//             alt={title}
+//             width={600}
+//             height={400}
+//             className="rounded-xl object-cover w-full h-full shadow-md"
+//             style={{ objectFit: "cover" }}
+//           />
+//         </div>
+
+//         {/* Text Side */}
+//         <div className={`flex flex-col p-8 ${textBgClass} ${textColorClass}`}>
+//           <CardContent className="flex-1 flex flex-col justify-center">
+//             <h3 className="text-2xl md:text-3xl font-bold mb-4">{title}</h3>
+//             <p className="text-lg leading-relaxed whitespace-pre-line">{content}</p>
+//           </CardContent>
+//         </div>
+//       </div>
+
+//       {/* Accent Bar */}
+//       <div className="h-2 w-full bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500"></div>
+//     </Card>
+//   )
+// }
+
+
 // components/slides/ImageContentSlide.tsx
 import Image from "next/image"
 import { Card, CardContent } from "@/components/ui/card"
@@ -84,7 +164,7 @@ interface ImageContentSlideProps {
   imageUrl: string
   imagePosition?: "left" | "right" | "top" | "bottom"
   grayscale?: boolean
-  blurLevel?: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10
+  blurLevel?: 0 |1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10
   theme?: "light" | "dark" | "gradient"
 }
 
@@ -109,20 +189,17 @@ export function ImageContentSlide({
     gradient: "bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-slate-900 dark:to-slate-800"
   }
 
-  const textBgClass = themeClasses[theme].split(" ")[0] // Extract bg-* class
-  const textColorClass = themeClasses[theme].split(" ")[1] // Extract text-* class
-
-  // Layout logic for image + text
-  let layoutClasses = "grid h-full"
-  if (imagePosition === "left") layoutClasses += " md:grid-cols-2"
-  if (imagePosition === "right") layoutClasses += " md:grid-cols-2 md:flex-row-reverse"
-  if (imagePosition === "top") layoutClasses += " grid-rows-2"
-  if (imagePosition === "bottom") layoutClasses += " grid-rows-2 flex-col-reverse"
+  // Decide layout: grid for left/right, flex for top/bottom
+  let layoutClasses = ""
+  if (imagePosition === "left") layoutClasses = "grid md:grid-cols-2"
+  if (imagePosition === "right") layoutClasses = "grid md:grid-cols-2 md:[direction:rtl]" // trick to flip columns
+  if (imagePosition === "top") layoutClasses = "flex flex-col"
+  if (imagePosition === "bottom") layoutClasses = "flex flex-col-reverse"
 
   return (
-    <Card className="w-full h-[600px] rounded-2xl shadow-lg overflow-hidden border-0 relative flex flex-col">
-      {/* Content Grid */}
-      <div className={layoutClasses}>
+    <Card className="w-full h-[600px] rounded-2xl shadow-lg overflow-hidden border-0 relative">
+      <div className={`${layoutClasses} h-full`}>
+        
         {/* Image Side */}
         <div className="relative bg-slate-100 dark:bg-slate-800 flex items-center justify-center p-4">
           <Image
@@ -131,12 +208,11 @@ export function ImageContentSlide({
             width={600}
             height={400}
             className="rounded-xl object-cover w-full h-full shadow-md"
-            style={{ objectFit: "cover" }}
           />
         </div>
 
         {/* Text Side */}
-        <div className={`flex flex-col p-8 ${textBgClass} ${textColorClass}`}>
+        <div className={`flex flex-col p-8 ${themeClasses[theme]}`}>
           <CardContent className="flex-1 flex flex-col justify-center">
             <h3 className="text-2xl md:text-3xl font-bold mb-4">{title}</h3>
             <p className="text-lg leading-relaxed whitespace-pre-line">{content}</p>
