@@ -8,6 +8,9 @@ export type SlideType =
   | "two-column";
 
 export interface SlideData {
+
+   id?: string | number;  
+   
   type: SlideType;
 
   // title
